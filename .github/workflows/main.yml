@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PREFIX_PATHS: true
+      GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.GOOGLE_ANALYTICS_TRACKING_ID }}
     steps:
       - uses: actions/checkout@v2
       - uses: enriikke/gatsby-gh-pages-action@v2
