@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Blog RSS Feed]]></title><description><![CDATA[A blog about web dev, robotics, and maybe some finances.]]></description><link>https://dabarov.github.io/blog</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 01 Mar 2022 17:42:36 GMT</lastBuildDate><item><title><![CDATA[Publish Gatsby project to GitHub Page using Github Actions]]></title><description><![CDATA[I didn’t find an article on the internet that covers the process thoroughly. So I want to share how I did this with my blog. This post…]]></description><link>https://dabarov.github.io/blog/gatsby-blog-github-pages/</link><guid isPermaLink="false">https://dabarov.github.io/blog/gatsby-blog-github-pages/</guid><pubDate>Sat, 26 Feb 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/blog/static/86c83d771480abaadadf31990328cf0f/d5eae/preview.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 39.24050632911392%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAABJ0AAASdAHeZh94AAABC0lEQVQoz3WRWXKDMAyGfZYuYTXG4AUwBMgy6UPvf52/I5mknSk8fJYta5e4Pr5h+hmNnxjtArQbN7nHCG0DbD8jrA/05xv8eGFcWCHo0H5CrhySssGpaHAqj0k2mVYGZdOhqD3y2rF/piwEVdVNV7jxAmUCqnaIRsqy0RHknFUGWWVfkF7kykA2PZduh4UDfeY13hKJ97Q64OAvkRCldlA2oJviLErtd4OR7q/+I1O7CKpImQF2WHmotQ08p1S2SGWU3NrWIr2pA3L+n1hCUAAbVp4h0XYzb5108b7ADAv/PXU060L7mJSTbFQGgpyH+Y7ufMO4fqG2I2/6ZcSVtkg2no5xCb9QB7TtH3T8+wE42wx4AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;Gihub Action Build Job&quot;
+        title=&quot;Gihub Action Build Job&quot;
+        src=&quot;/blog/static/86c83d771480abaadadf31990328cf0f/f058b/preview.png&quot;
+        srcset=&quot;/blog/static/86c83d771480abaadadf31990328cf0f/c26ae/preview.png 158w,
+/blog/static/86c83d771480abaadadf31990328cf0f/6bdcf/preview.png 315w,
+/blog/static/86c83d771480abaadadf31990328cf0f/f058b/preview.png 630w,
+/blog/static/86c83d771480abaadadf31990328cf0f/40601/preview.png 945w,
+/blog/static/86c83d771480abaadadf31990328cf0f/78612/preview.png 1260w,
+/blog/static/86c83d771480abaadadf31990328cf0f/d5eae/preview.png 1407w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;I didn’t find an article on the internet that covers the process thoroughly. So I want to share how I did this with my blog.&lt;/p&gt;
+&lt;p&gt;This post covers how to set up continuous deployment of Gatsby blog to Github Pages using Github Actions. It is applicable to any Gatsby project. I am going to use a blog as an example since it is probably the most common use of it. And let’s start right away.&lt;/p&gt;
+&lt;p&gt;First, if you don’t have a project ready to publish, use &lt;a href=&quot;https://github.com/gatsbyjs/gatsby-starter-blog&quot;&gt;Gatsby’s blog starter&lt;/a&gt; as a template. You can follow instructions in its &lt;code class=&quot;language-text&quot;&gt;README.md&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;Then, create directories &lt;code class=&quot;language-text&quot;&gt;.github&lt;/code&gt; in the root of the project and &lt;code class=&quot;language-text&quot;&gt;workflows&lt;/code&gt; inside. Inside of the &lt;code class=&quot;language-text&quot;&gt;workflows&lt;/code&gt; folder, create file &lt;code class=&quot;language-text&quot;&gt;main.yml&lt;/code&gt;. This structure will allow &lt;em&gt;Github Actions&lt;/em&gt; to detect workflows automatically. Now your project structure should looks similar to this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;.
+├── .git
+├── .github
+│   └── workflows
+│       └── main.yml
+├── .gitignore
+├── .prettierignore
+├── .prettierrc
+├── LICENSE
+├── README.md
+├── content
+├── gatsby-browser.js
+├── gatsby-config.js
+├── gatsby-node.js
+├── package-lock.json
+├── package.json
+├── src
+├── node_modules
+└── static&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The next step is to create a branch to serve as a source for &lt;em&gt;Github Pages&lt;/em&gt;. You can choose any name, but &lt;em&gt;Github Pages&lt;/em&gt; by default is looking &lt;code class=&quot;language-text&quot;&gt;gh-pages&lt;/code&gt; branch.&lt;/p&gt;
+&lt;p&gt;Now we can fill our &lt;code class=&quot;language-text&quot;&gt;main.yml&lt;/code&gt; file. For this, we’ll be using Github Action called &lt;a href=&quot;https://github.com/marketplace/actions/gatsby-publish&quot;&gt;Gatsby Publish&lt;/a&gt; with several changes.&lt;/p&gt;
+&lt;p&gt;Just copy and paste it into our &lt;code class=&quot;language-text&quot;&gt;main.yml&lt;/code&gt; file. Now &lt;em&gt;Github Actions&lt;/em&gt; uses version 2, so change it to &lt;code class=&quot;language-text&quot;&gt;uses: actions/checkout@v2&lt;/code&gt;. Then, add &lt;code class=&quot;language-text&quot;&gt;deploy-branch: gh-pages&lt;/code&gt; in the end. This will tell the action what is the Github Pages source branch. Also, depending on the branch you are working in, change &lt;code class=&quot;language-text&quot;&gt;dev&lt;/code&gt; to it. It should be &lt;code class=&quot;language-text&quot;&gt;master&lt;/code&gt; if you used starter as a template.&lt;/p&gt;
+&lt;p&gt;We need to set up an access token for &lt;code class=&quot;language-text&quot;&gt;access-token: ${{ secrets.ACCESS_TOKEN }}&lt;/code&gt; line. However, first, let’s finish with the project directory. For now, your &lt;code class=&quot;language-text&quot;&gt;main.yml&lt;/code&gt; file looks like this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yml&quot;&gt;&lt;pre class=&quot;language-yml&quot;&gt;&lt;code class=&quot;language-yml&quot;&gt;&lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Gatsby Publish
+
+&lt;span class=&quot;token key atrule&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; master
+
+&lt;span class=&quot;token key atrule&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; ubuntu&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;latest
+    &lt;span class=&quot;token key atrule&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; actions/checkout@v2
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; enriikke/gatsby&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;gh&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;pages&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;action@v2
+        &lt;span class=&quot;token key atrule&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;token key atrule&quot;&gt;access-token&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; $&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; secrets.ACCESS_TOKEN &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+          &lt;span class=&quot;token key atrule&quot;&gt;deploy-branch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; gh&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;pages&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you are publishing your project to the root, meaning &lt;em&gt;username.github.io&lt;/em&gt;, then you can skip everything related to path prefix.&lt;/p&gt;
+&lt;p&gt;You need to tell &lt;em&gt;Gatsby&lt;/em&gt; and &lt;em&gt;Github Pages&lt;/em&gt; that links should be relative to your path. For this, add path prefix into &lt;code class=&quot;language-text&quot;&gt;gatsby-config.js&lt;/code&gt; so that it looks like this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;exports &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;token literal-property property&quot;&gt;pathPrefix&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;/blog&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Replace &lt;code class=&quot;language-text&quot;&gt;/blog&lt;/code&gt; with the name of your project. You can read more about this &lt;a href=&quot;https://www.gatsbyjs.com/docs/how-to/previews-deploys-hosting/path-prefix/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Then add the environmental variable &lt;code class=&quot;language-text&quot;&gt;PREFIX_PATHS: true&lt;/code&gt; into your yml file. So now it should look similar to this:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yml&quot;&gt;&lt;pre class=&quot;language-yml&quot;&gt;&lt;code class=&quot;language-yml&quot;&gt;&lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Gatsby Publish
+
+&lt;span class=&quot;token key atrule&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; master
+
+&lt;span class=&quot;token key atrule&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; ubuntu&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;latest
+    &lt;span class=&quot;token key atrule&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token key atrule&quot;&gt;PREFIX_PATHS&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean important&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; actions/checkout@v2
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; enriikke/gatsby&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;gh&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;pages&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;action@v2
+        &lt;span class=&quot;token key atrule&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;token key atrule&quot;&gt;access-token&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; $&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; secrets.ACCESS_TOKEN &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+          &lt;span class=&quot;token key atrule&quot;&gt;deploy-branch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; gh&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;pages&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Almost there. It is time to set up &lt;em&gt;access token&lt;/em&gt;. In Github, go to Settings -&gt; Developer settings -&gt; Personal access tokens, and click on &lt;em&gt;Generate new token&lt;/em&gt;. Give it access to &lt;em&gt;&lt;strong&gt;repo&lt;/strong&gt;&lt;/em&gt;, &lt;em&gt;&lt;strong&gt;workflow&lt;/strong&gt;&lt;/em&gt; and &lt;em&gt;&lt;strong&gt;write:packages&lt;/strong&gt;&lt;/em&gt; and set expiration time to &lt;em&gt;&lt;strong&gt;No expiration&lt;/strong&gt;&lt;/em&gt;. Click generate token and copy it.&lt;/p&gt;
+&lt;p&gt;Now go to your project repository’s settings and find &lt;em&gt;Actions&lt;/em&gt; under the &lt;em&gt;Secrets&lt;/em&gt; section. Click on &lt;em&gt;New repository secret&lt;/em&gt;. Name it &lt;code class=&quot;language-text&quot;&gt;ACCESS_TOKEN&lt;/code&gt; and paste generated token into the value field.&lt;/p&gt;
+&lt;p&gt;Finally, you can push your project to Github, and &lt;em&gt;voila&lt;/em&gt; everything works. You can see how the project is deployed in the &lt;em&gt;Actions&lt;/em&gt; section in your repository.&lt;/p&gt;</content:encoded></item></channel></rss>
